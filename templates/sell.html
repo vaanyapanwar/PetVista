@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Sell{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <h2 class="page-title">🛒 Make a Sale</h2>
+    <p class="page-sub">Select a product and enter the quantity sold</p>
+  </div>
+</div>
+
+<div class="sell-layout">
+  <div class="form-card">
+    <form method="POST" class="pet-form" id="sell-form">
+      <div class="form-group">
+        <label>Select Product</label>
+        <select name="pid" required class="form-input" id="product-select">
+          <option value="" disabled selected>Choose a product…</option>
+          {% for p in products %}
+            <option value="{{ p.product_id }}"
+                    data-price="{{ p.price }}"
+                    data-stock="{{ p.quantity }}">
+              {{ p.name }} — ₹{{ "%.2f"|format(p.price) }} ({{ p.quantity }} in stock)
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Quantity</label>
+        <input type="number" name="quantity" id="qty-input" min="1" value="1" required class="form-input" />
+      </div>
+
+      <!-- Live preview -->
+      <div class="sell-preview" id="sell-preview" style="display:none;">
+        <div class="preview-row">
+          <span>Unit Price</span>
+          <strong id="prev-price">₹0</strong>
+        </div>
+        <div class="preview-row">
+          <span>Quantity</span>
+          <strong id="prev-qty">0</strong>
+        </div>
+        <div class="preview-row preview-total">
+          <span>Total</span>
+          <strong id="prev-total">₹0</strong>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg">Confirm Sale 🎉</button>
+    </form>
+  </div>
+
+  <div class="sell-tips">
+    <div class="tip-card">
+      <div class="tip-icon">🐾</div>
+      <h4>Quick Tips</h4>
+      <ul>
+        <li>Select the product from the dropdown</li>
+        <li>Enter quantity — total auto-calculates</li>
+        <li>Stock updates automatically on sale</li>
+      </ul>
+    </div>
+    <div class="tip-card tip-pets">
+      <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=80&auto=format&fit=crop"
+           alt="happy dog" style="width:100%;border-radius:16px;object-fit:cover;height:180px;" />
+    </div>
+  </div>
+</div>
+
+{% endblock %}

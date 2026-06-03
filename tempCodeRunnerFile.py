@@ -1,0 +1,1 @@
+app.secret_key = 'petvista_secret_key'

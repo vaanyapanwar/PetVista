@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Sales History{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <h2 class="page-title">📊 Sales History</h2>
+    <p class="page-sub">All transactions at a glance</p>
+  </div>
+  <div class="revenue-pill">
+    Total Revenue: <strong>₹{{ "%.2f"|format(total_revenue) }}</strong>
+  </div>
+</div>
+
+{% if sales %}
+<div class="table-wrap">
+  <table class="pet-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Product</th>
+        <th>Category</th>
+        <th>Qty Sold</th>
+        <th>Total (₹)</th>
+        <th>Date & Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in sales %}
+      <tr>
+        <td class="muted">{{ s.sale_id }}</td>
+        <td><strong>{{ s.product_name }}</strong></td>
+        <td><span class="cat-tag">{{ s.category }}</span></td>
+        <td>{{ s.quantity_sold }}</td>
+        <td class="price-col">₹{{ "%.2f"|format(s.total_price) }}</td>
+        <td class="muted">{{ s.sale_date.strftime('%d %b %Y, %I:%M %p') }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-page">
+  <div class="empty-icon">📊</div>
+  <h3>No sales recorded yet</h3>
+  <p><a href="{{ url_for('sell') }}">Make your first sale →</a></p>
+</div>
+{% endif %}
+
+{% endblock %}

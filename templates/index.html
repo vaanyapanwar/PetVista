@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+
+<!-- ── HERO ──────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-eyebrow">Welcome back 👋</p>
+    <h1 class="hero-title">Your Pet Store,<br/><em>All in One Place</em></h1>
+    <p class="hero-sub">Manage inventory, track sales, and keep tails wagging.</p>
+    <div class="hero-actions">
+      <a href="{{ url_for('sell') }}" class="btn btn-primary">New Sale 🛒</a>
+      <a href="{{ url_for('add_product') }}" class="btn btn-ghost">+ Add Product</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-blob"></div>
+    <img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=600&q=80&auto=format&fit=crop"
+         alt="Happy pets" class="hero-img" />
+    <div class="floating-badge badge-1">🐕 Pet Friendly</div>
+    <div class="floating-badge badge-2">✨ Premium Store</div>
+  </div>
+</section>
+
+<!-- ── STATS ─────────────────────────────────────────── -->
+<section class="stats-row">
+  <div class="stat-card">
+    <div class="stat-icon">📦</div>
+    <div class="stat-body">
+      <span class="stat-num">{{ total_products }}</span>
+      <span class="stat-label">Products</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">💰</div>
+    <div class="stat-body">
+      <span class="stat-num">₹{{ "%.0f"|format(revenue) }}</span>
+      <span class="stat-label">Total Revenue</span>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">🛍️</div>
+    <div class="stat-body">
+      <span class="stat-num">{{ sales_count }}</span>
+      <span class="stat-label">Total Sales</span>
+    </div>
+  </div>
+  <div class="stat-card {% if low_stock|length > 0 %}stat-warn{% endif %}">
+    <div class="stat-icon">⚠️</div>
+    <div class="stat-body">
+      <span class="stat-num">{{ low_stock|length }}</span>
+      <span class="stat-label">Low Stock</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── BOTTOM GRID ────────────────────────────────────── -->
+<div class="dash-grid">
+
+  <!-- Low stock -->
+  <div class="card">
+    <div class="card-header">
+      <h3>⚠️ Low Stock Alert</h3>
+      <a href="{{ url_for('products') }}" class="card-link">View all →</a>
+    </div>
+    {% if low_stock %}
+      <ul class="item-list">
+        {% for p in low_stock %}
+        <li class="item-row">
+          <div>
+            <span class="item-name">{{ p.name }}</span>
+            <span class="item-cat">{{ p.category }}</span>
+          </div>
+          <span class="badge badge-warn">{{ p.quantity }} left</span>
+        </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="empty-state">🎉 All products well stocked!</div>
+    {% endif %}
+  </div>
+
+  <!-- Recent sales -->
+  <div class="card">
+    <div class="card-header">
+      <h3>📈 Recent Sales</h3>
+      <a href="{{ url_for('sales') }}" class="card-link">View all →</a>
+    </div>
+    {% if recent_sales %}
+      <ul class="item-list">
+        {% for s in recent_sales %}
+        <li class="item-row">
+          <div>
+            <span class="item-name">{{ s.product_name }}</span>
+            <span class="item-cat">{{ s.sale_date.strftime('%d %b, %I:%M %p') }}</span>
+          </div>
+          <span class="badge badge-green">₹{{ "%.0f"|format(s.total_price) }}</span>
+        </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="empty-state">No sales yet. Make your first sale!</div>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

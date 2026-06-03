@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Edit Product{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <h2 class="page-title">✏️ Edit Product</h2>
+    <p class="page-sub">Update price or stock for <strong>{{ product.name }}</strong></p>
+  </div>
+  <a href="{{ url_for('products') }}" class="btn btn-ghost">← Back</a>
+</div>
+
+<div class="form-card">
+  <div class="edit-readonly">
+    <div class="readonly-item">
+      <span class="readonly-label">Product ID</span>
+      <span class="readonly-val">#{{ product.product_id }}</span>
+    </div>
+    <div class="readonly-item">
+      <span class="readonly-label">Name</span>
+      <span class="readonly-val">{{ product.name }}</span>
+    </div>
+    <div class="readonly-item">
+      <span class="readonly-label">Category</span>
+      <span class="readonly-val">{{ product.category }}</span>
+    </div>
+  </div>
+
+  <form method="POST" class="pet-form">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Price (₹)</label>
+        <input type="number" name="price" step="0.01" value="{{ product.price }}" required class="form-input" />
+      </div>
+      <div class="form-group">
+        <label>Quantity in Stock</label>
+        <input type="number" name="quantity" value="{{ product.quantity }}" required class="form-input" />
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg">Update Product ✅</button>
+  </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Products{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <h2 class="page-title">📦 Products</h2>
+    <p class="page-sub">Manage your pet store inventory</p>
+  </div>
+  <a href="{{ url_for('add_product') }}" class="btn btn-primary">+ Add Product</a>
+</div>
+
+<!-- Filters -->
+<div class="filters">
+  <form method="GET" class="filter-form">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" name="search" value="{{ search }}" placeholder="Search products…" class="search-input" />
+    </div>
+    <select name="category" class="select-input" onchange="this.form.submit()">
+      <option value="">All Categories</option>
+      {% for cat in categories %}
+        <option value="{{ cat }}" {% if cat == selected_category %}selected{% endif %}>{{ cat }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-ghost">Filter</button>
+    {% if search or selected_category %}
+      <a href="{{ url_for('products') }}" class="btn btn-ghost">Clear</a>
+    {% endif %}
+  </form>
+</div>
+
+<!-- Product Grid -->
+{% if products %}
+<div class="product-grid">
+  {% for p in products %}
+  <div class="product-card {% if p.quantity < 10 %}product-card--low{% endif %}">
+    <div class="product-emoji">{{ {'Food':'🍖','Grooming':'✂️','Toys':'🎾','Medicine':'💊','Accessories':'🦮'}.get(p.category, '🐾') }}</div>
+    <div class="product-info">
+      <h4 class="product-name">{{ p.name }}</h4>
+      <span class="product-cat-badge">{{ p.category }}</span>
+      <div class="product-meta">
+        <span class="product-price">₹{{ "%.2f"|format(p.price) }}</span>
+        <span class="product-qty {% if p.quantity < 10 %}qty-low{% endif %}">
+          {{ p.quantity }} in stock
+        </span>
+      </div>
+    </div>
+    <div class="product-actions">
+      <a href="{{ url_for('edit_product', pid=p.product_id) }}" class="icon-btn" title="Edit">✏️</a>
+      <form method="POST" action="{{ url_for('delete_product', pid=p.product_id) }}" onsubmit="return confirm('Delete {{ p.name }}?')">
+        <button type="submit" class="icon-btn" title="Delete">🗑️</button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="empty-page">
+  <div class="empty-icon">🐾</div>
+  <h3>No products found</h3>
+  <p>Try adjusting your search or <a href="{{ url_for('add_product') }}">add a new product</a>.</p>
+</div>
+{% endif %}
+
+{% endblock %}
