@@ -2,6 +2,8 @@
 
 A warm, pet-owner-friendly inventory & sales management system built with Flask + MySQL.
 
+<img width="1448" height="953" alt="Screenshot 2026-06-03 112407" src="https://github.com/user-attachments/assets/5c733b93-108a-4f09-b4f3-5116a55f5b89" />
+
 ## Project Structure
 
 ```
